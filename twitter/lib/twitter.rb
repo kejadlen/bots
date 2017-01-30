@@ -1,15 +1,9 @@
+require "twitter/version"
+
 require "faraday"
 require "faraday_middleware"
 
 module Twitter
-  class RateLimitedError < StandardError
-    attr_reader :reset_at
-
-    def initialize(reset_at:)
-      @reset_at = reset_at
-    end
-  end
-
   class Client
     attr_reader :api_key, :api_secret
 
@@ -45,6 +39,32 @@ module Twitter
         conn.request :oauth, oauth
 
         conn.response :raise_error
+
+        conn.adapter Faraday.default_adapter
+      end
+    end
+  end
+
+  class Client::Authed < Client
+    attr_reader :access_token, :access_token_secret
+
+    def initialize(api_key:, api_secret:,
+                   access_token:, access_token_secret:)
+      super(api_key: api_key, api_secret: api_secret)
+
+      @access_token, @access_token_secret = access_token, access_token_secret
+
+      @conn = Faraday.new("https://api.twitter.com/1.1") do |conn|
+        conn.request :oauth,
+          consumer_key: api_key,
+          consumer_secret: api_secret,
+          token: access_token,
+          token_secret: access_token_secret
+        conn.request :json
+        conn.request :url_encoded
+
+        conn.response :raise_error
+        conn.response :json, :content_type => /\bjson$/
 
         conn.adapter Faraday.default_adapter
       end

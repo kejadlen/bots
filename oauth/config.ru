@@ -1,6 +1,5 @@
 require "roda"
-
-require_relative "twitter"
+require "twitter"
 
 class App < Roda
   use Rack::Session::Cookie, secret: ENV["SECRET"]
