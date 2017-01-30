@@ -1,4 +1,4 @@
-require_relative './tech_mottos'
+require_relative 'tech_mottos/tech_mottos'
 
 namespace :tech_mottos do
   task :tweet do

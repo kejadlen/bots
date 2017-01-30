@@ -1,3 +1,11 @@
+PATH
+  remote: ../twitter
+  specs:
+    twitter (0.1.0)
+      faraday (~> 0.11)
+      faraday_middleware (~> 0.11)
+      simple_oauth (~> 0.3)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -25,11 +33,9 @@ PLATFORMS
 
 DEPENDENCIES
   activesupport
-  faraday
-  faraday_middleware
   minitest
   rake
-  simple_oauth
+  twitter!
 
 BUNDLED WITH
    1.13.6

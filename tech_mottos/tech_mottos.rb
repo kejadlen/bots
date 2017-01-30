@@ -1,6 +1,5 @@
 require "active_support"
-require "faraday"
-require "faraday_middleware"
+require "twitter"
 
 class Wordnik
   URL = "http://api.wordnik.com/v4/"
@@ -21,40 +20,18 @@ class Wordnik
   end
 end
 
-class Twitter
-  attr_reader :conn
-
-  def initialize(api_key, api_secret, access_token, access_token_secret)
-    @conn = Faraday.new('https://api.twitter.com/1.1') do |conn|
-      conn.request :url_encoded
-      conn.request :oauth, {
-        consumer_key: api_key,
-        consumer_secret: api_secret,
-        token: access_token,
-        token_secret: access_token_secret,
-      }
-
-      conn.response :raise_error
-
-      conn.adapter Faraday.default_adapter
-    end
-  end
-
-  def tweet(text)
-    conn.post('statuses/update.json', status: text)
-  end
-end
-
 class TechMottos
   attr_reader :wordnik, :inflector, :twitter
 
   def initialize
     @wordnik = Wordnik.new(ENV.fetch("WORDNIK_API_KEY"))
     @inflector = ActiveSupport::Inflector
-    @twitter = Twitter.new(ENV.fetch("TWITTER_API_KEY"),
-                           ENV.fetch("TWITTER_API_SECRET"),
-                           ENV.fetch("TWITTER_ACCESS_TOKEN"),
-                           ENV.fetch("TWITTER_ACCESS_TOKEN_SECRET"))
+    @twitter = Twitter::Client::Authed.new(
+      api_key: ENV.fetch("TWITTER_API_KEY"),
+      api_secret: ENV.fetch("TWITTER_API_SECRET"),
+      access_token: ENV.fetch("TWITTER_ACCESS_TOKEN"),
+      access_token_secret: ENV.fetch("TWITTER_ACCESS_TOKEN_SECRET")
+    )
   end
 
   def motto
@@ -69,7 +46,9 @@ class TechMottos
   end
 
   def tweet!
-    twitter.tweet(motto)
+    twitter.conn.post("statuses/update.json", status: motto)
+  rescue StandardError => e
+    p e
   end
 end
 

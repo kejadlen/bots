@@ -5,11 +5,13 @@ require "faraday_middleware"
 
 module Twitter
   class Client
-    attr_reader :api_key, :api_secret
-
     def initialize(api_key:, api_secret:)
       @api_key, @api_secret = api_key, api_secret
     end
+
+    private
+
+    attr_reader :api_key, :api_secret
   end
 
   class Client::OAuth < Client
@@ -46,7 +48,7 @@ module Twitter
   end
 
   class Client::Authed < Client
-    attr_reader :access_token, :access_token_secret
+    attr_reader :conn
 
     def initialize(api_key:, api_secret:,
                    access_token:, access_token_secret:)
@@ -60,14 +62,16 @@ module Twitter
           consumer_secret: api_secret,
           token: access_token,
           token_secret: access_token_secret
-        conn.request :json
         conn.request :url_encoded
 
         conn.response :raise_error
-        conn.response :json, :content_type => /\bjson$/
 
         conn.adapter Faraday.default_adapter
       end
     end
+
+    private
+
+    attr_reader :access_token, :access_token_secret
   end
 end
