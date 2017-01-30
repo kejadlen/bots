@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 gem 'activesupport'
 gem 'faraday'
 gem 'faraday_middleware'
+gem 'rake'
 gem 'simple_oauth'
 
 group :development do
