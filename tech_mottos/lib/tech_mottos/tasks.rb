@@ -5,7 +5,7 @@ require_relative "../tech_mottos"
 namespace :tech_mottos do
   desc "Tweet a Tech Motto"
   task :tweet do
-    wordnik = Wordnik.new(ENV.fetch("WORDNIK_API_KEY"))
+    wordnik = TechMottos::Wordnik.new(ENV.fetch("WORDNIK_API_KEY"))
     twitter = Twitter::Client::Authed.new(
       api_key: ENV.fetch("TWITTER_API_KEY"),
       api_secret: ENV.fetch("TWITTER_API_SECRET"),
