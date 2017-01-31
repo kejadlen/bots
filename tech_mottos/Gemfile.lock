@@ -6,6 +6,13 @@ PATH
       faraday_middleware (~> 0.11)
       simple_oauth (~> 0.3)
 
+PATH
+  remote: .
+  specs:
+    tech_mottos (0.1.0)
+      activesupport (~> 5.0)
+      twitter
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -22,7 +29,7 @@ GEM
     i18n (0.7.0)
     minitest (5.10.1)
     multipart-post (2.0.0)
-    rake (12.0.0)
+    rake (10.5.0)
     simple_oauth (0.3.1)
     thread_safe (0.3.5)
     tzinfo (1.2.2)
@@ -32,9 +39,10 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activesupport
-  minitest
-  rake
+  bundler (~> 1.13)
+  minitest (~> 5.0)
+  rake (~> 10.0)
+  tech_mottos!
   twitter!
 
 BUNDLED WITH

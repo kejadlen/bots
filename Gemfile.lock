@@ -1,4 +1,11 @@
 PATH
+  remote: tech_mottos
+  specs:
+    tech_mottos (0.1.0)
+      activesupport (~> 5.0)
+      twitter
+
+PATH
   remote: twitter
   specs:
     twitter (0.1.0)
@@ -32,8 +39,8 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activesupport
   rake
+  tech_mottos!
   twitter!
 
 BUNDLED WITH
