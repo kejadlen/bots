@@ -26,15 +26,9 @@ module TechMottos
   class TechMottos
     attr_reader :wordnik, :inflector, :twitter
 
-    def initialize
-      @wordnik = Wordnik.new(ENV.fetch("WORDNIK_API_KEY"))
+    def initialize(wordnik, twitter)
+      @wordnik, @twitter = wordnik, twitter
       @inflector = ActiveSupport::Inflector
-      @twitter = Twitter::Client::Authed.new(
-        api_key: ENV.fetch("TWITTER_API_KEY"),
-        api_secret: ENV.fetch("TWITTER_API_SECRET"),
-        access_token: ENV.fetch("TWITTER_ACCESS_TOKEN"),
-        access_token_secret: ENV.fetch("TWITTER_ACCESS_TOKEN_SECRET")
-      )
     end
 
     def motto
