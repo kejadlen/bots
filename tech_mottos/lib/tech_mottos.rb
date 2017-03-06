@@ -17,8 +17,8 @@ module TechMottos
     end
 
     def random_words(params)
-      params[:minCorpusCount] ||= 2
-      params[:minDictionaryCount] ||= 3
+      params[:minCorpusCount] ||= 1000
+      # params[:minDictionaryCount] ||= 5
       conn.get("words.json/randomWords", params).body.map {|word| word["word"] }
     end
   end

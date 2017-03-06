@@ -3,8 +3,7 @@ require "rake"
 require_relative "../tech_mottos"
 
 namespace :tech_mottos do
-  desc "Tweet a Tech Motto"
-  task :tweet do
+  def tech_mottos
     wordnik = TechMottos::Wordnik.new(ENV.fetch("WORDNIK_API_KEY"))
     twitter = Twitter::Client::Authed.new(
       api_key: ENV.fetch("TWITTER_API_KEY"),
@@ -12,7 +11,15 @@ namespace :tech_mottos do
       access_token: ENV.fetch("TWITTER_ACCESS_TOKEN"),
       access_token_secret: ENV.fetch("TWITTER_ACCESS_TOKEN_SECRET")
     )
-    tech_mottos = TechMottos::TechMottos.new(wordnik, twitter)
+    TechMottos::TechMottos.new(wordnik, twitter)
+  end
+
+  task :sample do
+    puts tech_mottos.motto
+  end
+
+  desc "Tweet a Tech Motto"
+  task :tweet do
     tech_mottos.tweet!
   end
 end
