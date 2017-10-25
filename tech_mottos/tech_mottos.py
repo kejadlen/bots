@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import os
 import random
 
@@ -30,24 +32,32 @@ class Twitter:
         data = {'status': status}
         self.session.post('https://api.twitter.com/1.1/statuses/update.json', data=data)
 
-def main():
+class TechMottos:
+
+    def __init__(self, wordnik, twitter):
+        self.wordnik = wordnik
+        self.twitter = twitter
+
+    def tweet(self):
+        self.twitter.post(motto())
+
+    def motto(self):
+        nouns = self.wordnik.random_words(partOfSpeech='noun')
+        verbs = self.wordnik.random_words(partOfSpeech='verb-transitive')
+        adverbs = self.wordnik.random_words(partOfSpeech='adverb')
+
+        [verb_1, verb_2] = random.sample(verbs, 2)
+        adverb = random.choice(adverbs)
+        noun = inflection.pluralize(random.choice(nouns))
+        return ' '.join([verb_1, adverb, 'and', verb_2, noun]).capitalize()
+
+if __name__ == "__main__":
     wordnik = Wordnik(os.environ['WORDNIK_API_KEY'])
     twitter = Twitter(
             os.environ['TWITTER_API_KEY'],
             os.environ['TWITTER_API_SECRET'],
             os.environ['TWITTER_ACCESS_TOKEN'],
             os.environ['TWITTER_ACCESS_TOKEN_SECRET'])
-
-    nouns = wordnik.random_words(partOfSpeech='noun')
-    verbs = wordnik.random_words(partOfSpeech='verb-transitive')
-    adverbs = wordnik.random_words(partOfSpeech='adverb')
-
-    [verb_1, verb_2] = random.sample(verbs, 2)
-    adverb = random.choice(adverbs)
-    noun = inflection.pluralize(random.choice(nouns))
-    motto = ' '.join([verb_1, adverb, 'and', verb_2, noun]).capitalize()
-
-    twitter.post(motto)
-
-if __name__ == "__main__":
-    main()
+    tech_mottos = TechMottos(wordnik, twitter)
+    motto = tech_mottos.motto()
+    print(motto)
