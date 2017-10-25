@@ -1,9 +1,6 @@
-/.bundle/
-/.yardoc
-/Gemfile.lock
-/_yardoc/
-/coverage/
-/doc/
-/pkg/
-/spec/reports/
-/tmp/
+.Python
+bin
+include
+lib
+pip-selfcheck.json
+__pycache__

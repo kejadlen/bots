@@ -1,11 +1,4 @@
 PATH
-  remote: tech_mottos
-  specs:
-    tech_mottos (0.1.0)
-      activesupport (~> 5.0)
-      twitter
-
-PATH
   remote: twitter
   specs:
     twitter (0.1.0)
@@ -16,32 +9,20 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (5.0.1)
-      concurrent-ruby (~> 1.0, >= 1.0.2)
-      i18n (~> 0.7)
-      minitest (~> 5.1)
-      tzinfo (~> 1.1)
-    concurrent-ruby (1.0.4)
-    faraday (0.11.0)
+    faraday (0.13.1)
       multipart-post (>= 1.2, < 3)
-    faraday_middleware (0.11.0.1)
+    faraday_middleware (0.12.2)
       faraday (>= 0.7.4, < 1.0)
-    i18n (0.7.0)
-    minitest (5.10.1)
     multipart-post (2.0.0)
-    rake (12.0.0)
+    rake (12.2.1)
     simple_oauth (0.3.1)
-    thread_safe (0.3.5)
-    tzinfo (1.2.2)
-      thread_safe (~> 0.1)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   rake
-  tech_mottos!
   twitter!
 
 BUNDLED WITH
-   1.13.6
+   1.15.4
