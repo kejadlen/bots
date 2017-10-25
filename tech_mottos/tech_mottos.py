@@ -39,7 +39,7 @@ class TechMottos:
         self.twitter = twitter
 
     def tweet(self):
-        self.twitter.post(motto())
+        self.twitter.post(self.motto())
 
     def motto(self):
         nouns = self.wordnik.random_words(partOfSpeech='noun')

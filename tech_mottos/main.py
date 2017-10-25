@@ -6,7 +6,7 @@ from base64 import b64decode
 from tech_mottos import *
 
 def decrypt(encrypted):
-    return boto3.client('kms').decrypt(encrypted)
+    return boto3.client('kms').decrypt(CiphertextBlob=b64decode(encrypted))
 
 WORDNIK_API_KEY = decrypt(os.environ['WORDNIK_API_KEY'])['Plaintext']
 TWITTER_API_KEY = decrypt(os.environ['TWITTER_API_KEY'])['Plaintext']
