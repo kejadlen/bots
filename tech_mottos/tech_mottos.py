@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import logging
 import os
 import random
 
@@ -30,7 +31,7 @@ class Twitter:
 
     def post(self, status):
         data = {'status': status}
-        self.session.post('https://api.twitter.com/1.1/statuses/update.json', data=data)
+        return self.session.post('https://api.twitter.com/1.1/statuses/update.json', data=data)
 
 class TechMottos:
 
@@ -39,7 +40,12 @@ class TechMottos:
         self.twitter = twitter
 
     def tweet(self):
-        self.twitter.post(self.motto())
+        logger = logging.getLogger()
+        motto = self.motto()
+        logger.debug('Motto: %s' % motto)
+        response = self.twitter.post(motto)
+        logger.debug('Response: %s' % response)
+        return response
 
     def motto(self):
         nouns = self.wordnik.random_words(partOfSpeech='noun')
@@ -59,5 +65,5 @@ if __name__ == "__main__":
             os.environ['TWITTER_ACCESS_TOKEN'],
             os.environ['TWITTER_ACCESS_TOKEN_SECRET'])
     tech_mottos = TechMottos(wordnik, twitter)
-    motto = tech_mottos.motto()
-    print(motto)
+    logging.basicConfig(level=logging.DEBUG)
+    tech_mottos.tweet()

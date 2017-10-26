@@ -1,7 +1,8 @@
-import boto3
+from base64 import b64decode
+import logging
 import os
 
-from base64 import b64decode
+import boto3
 
 from tech_mottos import *
 
@@ -15,6 +16,9 @@ TWITTER_ACCESS_TOKEN = decrypt(os.environ['TWITTER_ACCESS_TOKEN'])['Plaintext']
 TWITTER_ACCESS_TOKEN_SECRET = decrypt(os.environ['TWITTER_ACCESS_TOKEN_SECRET'])['Plaintext']
 
 def handler(event, context):
+    logger = logging.getLogger()
+    # logger.setLevel(logging.DEBUG)
+
     wordnik = Wordnik(WORDNIK_API_KEY)
     twitter = Twitter(
             TWITTER_API_KEY,
@@ -23,4 +27,4 @@ def handler(event, context):
             TWITTER_ACCESS_TOKEN_SECRET)
 
     tech_mottos = TechMottos(wordnik, twitter)
-    tech_mottos.tweet()
+    return tech_mottos.tweet().text
