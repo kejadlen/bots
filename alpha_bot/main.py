@@ -5,6 +5,8 @@ import os
 
 import boto3
 
+from alpha_bot import AlphaBot
+
 def decrypt(encrypted):
     return boto3.client('kms').decrypt(CiphertextBlob=b64decode(encrypted))
 
@@ -15,6 +17,6 @@ class Slack:
         self.access_token = access_token
 
 def handler(event, context):
-    alpha_bot = AlphaBot(slack)
+    alpha_bot = AlphaBot(None)
     wrapper = json.loads(event['body'])
     return alpha_bot.handle(wrapper)

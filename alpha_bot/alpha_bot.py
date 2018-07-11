@@ -8,6 +8,7 @@ class AlphaBot:
     def handle(self, wrapper):
         logger = logging.getLogger()
         logger.setLevel(logging.DEBUG)
+        logger.debug(wrapper)
 
         if wrapper['type'] == 'url_verification':
             return {
