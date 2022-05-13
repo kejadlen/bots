@@ -1,6 +1,3 @@
-.Python
-bin
-include
-lib
-pip-selfcheck.json
-__pycache__
+package*
+.terraform
+terraform.tfvars

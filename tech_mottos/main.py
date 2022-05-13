@@ -1,30 +1,34 @@
-from base64 import b64decode
-import logging
+import json
 import os
 
 import boto3
 
-from tech_mottos import *
+from tech_mottos import TechMottos, Twitter, Wordnik
 
-def decrypt(encrypted):
-    return boto3.client('kms').decrypt(CiphertextBlob=b64decode(encrypted))
-
-WORDNIK_API_KEY = decrypt(os.environ['WORDNIK_API_KEY'])['Plaintext']
-TWITTER_API_KEY = decrypt(os.environ['TWITTER_API_KEY'])['Plaintext']
-TWITTER_API_SECRET = decrypt(os.environ['TWITTER_API_SECRET'])['Plaintext']
-TWITTER_ACCESS_TOKEN = decrypt(os.environ['TWITTER_ACCESS_TOKEN'])['Plaintext']
-TWITTER_ACCESS_TOKEN_SECRET = decrypt(os.environ['TWITTER_ACCESS_TOKEN_SECRET'])['Plaintext']
 
 def handler(event, context):
-    logger = logging.getLogger()
+    # logger = logging.getLogger()
     # logger.setLevel(logging.DEBUG)
 
-    wordnik = Wordnik(WORDNIK_API_KEY)
+    session = boto3.session.Session()
+    client = session.client(service_name="secretsmanager")
+    secret_id = os.environ["SECRET_ID"]
+    secret_value = client.get_secret_value(SecretId=secret_id)
+    secret = json.loads(secret_value["SecretString"])
+
+    wordnik_api_key = secret["wordnik"]["api_key"]
+    twitter_api_key = secret["twitter"]["api_key"]
+    twitter_api_secret = secret["twitter"]["api_secret"]
+    twitter_access_token = secret["twitter"]["access_token"]
+    twitter_access_token_secret = secret["twitter"]["access_token_secret"]
+
+    wordnik = Wordnik(wordnik_api_key)
     twitter = Twitter(
-            TWITTER_API_KEY,
-            TWITTER_API_SECRET,
-            TWITTER_ACCESS_TOKEN,
-            TWITTER_ACCESS_TOKEN_SECRET)
+        twitter_api_key,
+        twitter_api_secret,
+        twitter_access_token,
+        twitter_access_token_secret,
+    )
 
     tech_mottos = TechMottos(wordnik, twitter)
     return tech_mottos.tweet().text
